@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  highbar:
+    build: .
+    image: highbar:latest
+    container_name: highbar
+    volumes:
+      - ./data:/app/data
+      - ./results:/app/results
+      - ./scores:/app/scores
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: --help
+
+  highbar-dev:
+    build: .
+    image: highbar:dev
+    container_name: highbar-dev
+    volumes:
+      - .:/app
+      - ./data:/app/data
+      - ./results:/app/results
+      - ./scores:/app/scores
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: bash
+    stdin_open: true
+    tty: true
