@@ -1,0 +1,97 @@
+# Example configuration for HighBar
+
+# Task configuration
+tasks:
+  rgc:
+    model_name: "llama-3"
+    batch_size: 8
+    max_length: 512
+  
+  extract:
+    model_name: "bert-base-uncased"
+    entity_types:
+      - "PERSON"
+      - "ORG"
+      - "STATUTE"
+      - "CASE"
+      - "DATE"
+  
+  summc:
+    model_name: "t5-base"
+    max_length: 256
+    min_length: 50
+    num_beams: 4
+  
+  claout:
+    model_name: "legal-bert"
+    max_depth: 5
+  
+  qar:
+    model_name: "llama-3"
+    retriever: "sentence-transformers/all-MiniLM-L6-v2"
+    top_k: 5
+
+# Baseline configuration
+baselines:
+  rag:
+    retriever_model: "sentence-transformers/all-MiniLM-L6-v2"
+    generator_model: "gpt2"
+    top_k: 5
+  
+  encoder:
+    model_name: "bert-base-uncased"
+    pooling: "mean"
+  
+  seq2seq:
+    model_name: "t5-base"
+    num_beams: 4
+
+# Metrics configuration
+metrics:
+  gcp:
+    threshold: 0.8
+  
+  ac:
+    min_coverage: 0.7
+  
+  hr:
+    max_rate: 0.15
+  
+  fgs:
+    min_score: 0.75
+
+# Ingestion configuration
+ingest:
+  api:
+    base_url: "https://api.example.com/legal"
+    timeout: 30
+  
+  hf:
+    dataset_name: "legal/ontario-cases"
+    split: "train"
+  
+  parquet:
+    batch_size: 1000
+
+# Governance configuration
+governance:
+  bans:
+    banned_terms:
+      - "sensitive_term_1"
+      - "sensitive_term_2"
+  
+  pii:
+    detect_names: true
+    detect_emails: true
+    detect_sin: true
+  
+  license_gate:
+    require_license: true
+    grace_period_days: 0
+
+# General settings
+general:
+  seed: 42
+  device: "cuda"  # or "cpu"
+  output_dir: "./results"
+  log_level: "INFO"
